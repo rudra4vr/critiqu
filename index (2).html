@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Critiqu — Honest design feedback. Instantly.</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0b0907;--cream:#f6f1e9;--warm:#ede5d4;
+  --accent:#d4521c;--muted:#7a7060;
+  --bl:rgba(0,0,0,0.08);--bd:rgba(255,255,255,0.08);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:16px 48px;background:rgba(246,241,233,0.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--bl)}
+.logo{font-family:'Playfair Display',serif;font-weight:900;font-size:20px;letter-spacing:-0.5px;color:var(--ink);text-decoration:none}
+.logo span{color:var(--accent)}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--ink)}
+
+/* BUTTONS */
+.btn{display:inline-block;padding:10px 22px;background:var(--ink);color:var(--cream);border-radius:5px;font-size:13px;font-weight:500;letter-spacing:0.03em;text-decoration:none;border:none;cursor:pointer;transition:background 0.2s,transform 0.15s;font-family:'DM Sans',sans-serif}
+.btn:hover{background:var(--accent);transform:translateY(-1px)}
+.btn.accent{background:var(--accent)}
+.btn.accent:hover{background:#b8421a}
+.btn.large{padding:14px 32px;font-size:15px}
+.btn.outline{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.btn.outline:hover{background:var(--ink);color:var(--cream)}
+.btn.w100{width:100%;text-align:center}
+.btn.green{background:#1a7a3c}
+.btn.green:hover{background:#155f2e}
+
+/* ANNOUNCEMENT BAR */
+.ann-bar{background:var(--accent);padding:10px 48px;text-align:center;font-size:13px;color:white;font-weight:500;display:flex;justify-content:center;align-items:center;gap:12px}
+.ann-bar a{color:white;font-weight:700;text-decoration:underline}
+.ann-spots{background:rgba(0,0,0,0.2);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;letter-spacing:0.06em}
+
+/* HERO */
+.hero{padding:80px 48px 64px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;max-width:1160px;margin:0 auto}
+.pill{display:inline-flex;align-items:center;gap:8px;background:var(--warm);border:1px solid var(--bl);border-radius:40px;padding:5px 14px 5px 8px;font-size:11px;font-weight:500;color:var(--muted);margin-bottom:20px}
+.pill-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,60px);font-weight:900;line-height:1.05;letter-spacing:-1.5px;margin-bottom:18px}
+h1 em{font-style:italic;color:var(--accent)}
+.hero-desc{font-size:15px;line-height:1.75;color:var(--muted);font-weight:300;max-width:440px;margin-bottom:28px}
+.hero-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.hero-note{font-size:12px;color:var(--muted)}
+
+/* SOCIAL PROOF */
+.hero-proof{display:flex;align-items:center;gap:10px;margin-top:20px;padding:12px 16px;background:var(--warm);border-radius:8px;border:1px solid var(--bl)}
+.proof-avatars{display:flex}
+.avatar{width:26px;height:26px;border-radius:50%;border:2px solid var(--cream);margin-left:-7px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white}
+.avatar:first-child{margin-left:0}
+.proof-text{font-size:12px;color:var(--muted);line-height:1.4}
+.proof-text strong{color:var(--ink);font-weight:600}
+
+/* MOCK CARD */
+.mock-card{background:white;border-radius:12px;box-shadow:0 24px 64px rgba(0,0,0,0.13),0 4px 16px rgba(0,0,0,0.06);overflow:hidden;border:1px solid var(--bl)}
+.mc-top{background:var(--ink);padding:18px 24px;display:flex;justify-content:space-between;align-items:center}
+.mc-label{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:4px}
+.mc-name{font-size:14px;font-weight:600;color:white}
+.mc-score-num{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:var(--accent);line-height:1}
+.mc-score-lbl{font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:0.08em;text-transform:uppercase;text-align:center}
+.mc-body{padding:20px 24px}
+.mc-sec-title{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mc-row{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.mc-row-lbl{font-size:12px;color:var(--ink);width:88px;flex-shrink:0}
+.mc-track{flex:1;height:6px;background:var(--warm);border-radius:3px;overflow:hidden}
+.mc-fill{height:100%;border-radius:3px;background:var(--accent)}
+.mc-score{font-size:11px;font-weight:600;width:28px;text-align:right}
+.mc-div{height:1px;background:var(--warm);margin:14px 0}
+.mc-fix{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:#fff8f5;border-left:3px solid var(--accent);border-radius:0 5px 5px 0;margin-bottom:8px}
+.mc-fix-n{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--accent);line-height:1;flex-shrink:0}
+.mc-fix-t{font-size:11px;line-height:1.5;color:var(--ink)}
+
+/* STATS */
+.stats{background:var(--ink);padding:40px 48px;display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
+.stat{padding:16px;border-right:1px solid rgba(255,255,255,0.07)}
+.stat:last-child{border-right:none}
+.stat-num{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:white;line-height:1;margin-bottom:5px}
+.stat-num span{color:var(--accent)}
+.stat-lbl{font-size:12px;color:rgba(255,255,255,0.4);font-weight:300}
+
+/* SECTIONS */
+.section{padding:80px 48px;max-width:1160px;margin:0 auto}
+.section-full{padding:80px 48px}
+.eyebrow{font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.eyebrow::before{content:'';display:block;width:20px;height:1.5px;background:var(--accent)}
+h2{font-family:'Playfair Display',serif;font-size:clamp(26px,3.5vw,42px);font-weight:700;line-height:1.1;letter-spacing:-1px;margin-bottom:12px}
+.sec-desc{font-size:15px;color:var(--muted);line-height:1.7;font-weight:300;max-width:500px;margin-bottom:48px}
+
+/* HOW IT WORKS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.step{padding:26px 20px;background:white;border-radius:10px;border:1px solid var(--bl);transition:transform 0.2s,box-shadow 0.2s}
+.step:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.08)}
+.step-num{font-family:'Playfair Display',serif;font-size:42px;font-weight:900;color:var(--warm);line-height:1;margin-bottom:12px}
+.step h3{font-size:14px;font-weight:600;margin-bottom:7px}
+.step p{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* TYPES */
+.types-bg{background:var(--warm)}
+.types-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.type-card{padding:24px 20px;background:white;border-radius:10px;border:1px solid var(--bl);transition:transform 0.2s,box-shadow 0.2s,border-color 0.2s}
+.type-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.08);border-color:var(--accent)}
+.type-icon{font-size:24px;margin-bottom:10px}
+.type-card h3{font-size:14px;font-weight:600;margin-bottom:7px}
+.type-card p{font-size:12px;color:var(--muted);line-height:1.6}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.tag{font-size:10px;padding:3px 8px;border-radius:20px;background:var(--warm);color:var(--muted);font-weight:500}
+
+/* ── PRICING — UPGRADED ── */
+.pricing-bg{background:var(--ink)}
+.pricing-eyebrow{color:var(--accent)}
+.pricing-title{color:white}
+.pricing-desc{color:rgba(255,255,255,0.45)}
+
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;max-width:900px}
+
+.plan{background:rgba(255,255,255,0.04);border-radius:12px;border:1.5px solid rgba(255,255,255,0.08);padding:28px 24px;position:relative;transition:transform 0.2s,box-shadow 0.2s}
+.plan:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.3)}
+.plan.featured{background:var(--accent);border-color:var(--accent)}
+.plan.pro-plan{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.15)}
+
+.plan-badge{position:absolute;top:-11px;left:20px;background:#22c55e;color:white;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 12px;border-radius:20px}
+.plan-badge.hot{background:#f59e0b}
+
+.plan-name{font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:8px}
+.plan.featured .plan-name{color:rgba(255,255,255,0.7)}
+
+.plan-price{font-family:'Playfair Display',serif;font-size:40px;font-weight:900;line-height:1;color:white;margin-bottom:3px}
+.plan-period{font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:20px}
+.plan.featured .plan-period{color:rgba(255,255,255,0.7)}
+
+.plan-features{list-style:none;margin-bottom:24px}
+.plan-features li{font-size:13px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:8px}
+.plan.featured .plan-features li{border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.9)}
+.plan-features li::before{content:'✦';color:var(--accent);font-size:10px}
+.plan.featured .plan-features li::before{color:white}
+
+.plan-cta-note{font-size:11px;color:rgba(255,255,255,0.3);text-align:center;margin-top:10px}
+.plan.featured .plan-cta-note{color:rgba(255,255,255,0.6)}
+
+/* ONE-TIME OFFER BOX */
+.one-time-box{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:24px 28px;margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:900px}
+.otb-left h3{font-size:16px;font-weight:700;color:white;margin-bottom:4px}
+.otb-left p{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5}
+.otb-right{flex-shrink:0;text-align:center}
+.otb-price{font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:white;line-height:1}
+.otb-period{font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:10px}
+.otb-badge{display:inline-block;background:rgba(255,255,255,0.1);border-radius:20px;padding:3px 10px;font-size:10px;color:rgba(255,255,255,0.5);margin-bottom:8px;letter-spacing:0.06em;text-transform:uppercase}
+
+/* URGENCY STRIP */
+.urgency{background:rgba(212,82,28,0.15);border:1px solid rgba(212,82,28,0.3);border-radius:8px;padding:14px 20px;display:flex;align-items:center;gap:12px;margin-top:20px;max-width:900px}
+.urgency-dot{width:8px;height:8px;background:#22c55e;border-radius:50%;flex-shrink:0;animation:pulse 2s infinite}
+.urgency p{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.4}
+.urgency strong{color:white}
+
+/* TESTIMONIALS */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testi{background:white;border-radius:10px;border:1px solid var(--bl);padding:24px;position:relative}
+.testi::before{content:'\201C';font-family:'Playfair Display',serif;font-size:48px;color:var(--accent);opacity:0.3;position:absolute;top:12px;left:18px;line-height:1}
+.testi-text{font-size:14px;line-height:1.7;color:var(--ink);margin-bottom:16px;padding-top:20px}
+.testi-author{display:flex;align-items:center;gap:10px}
+.testi-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0}
+.testi-name{font-size:13px;font-weight:600;color:var(--ink)}
+.testi-role{font-size:11px;color:var(--muted)}
+.stars{color:#f59e0b;font-size:12px;margin-bottom:8px}
+
+/* UPLOAD */
+.upload-section{background:var(--ink);color:var(--cream)}
+.upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.upload-left h2{color:white}
+.upload-left .sec-desc{color:rgba(255,255,255,0.45)}
+.wyg-list{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.wyg{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.55)}
+.wyg-dot{color:var(--accent);font-size:14px;flex-shrink:0}
+
+.upload-form-wrap{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:12px;padding:28px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px}
+.field input,.field select{width:100%;padding:12px 15px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:6px;color:white;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;appearance:none}
+.field input::placeholder{color:rgba(255,255,255,0.2)}
+.field input:focus,.field select:focus{border-color:var(--accent)}
+.field select{color:rgba(255,255,255,0.6);cursor:pointer}
+.field select option{background:#1a1410;color:white}
+.field-div{height:1px;background:rgba(255,255,255,0.07);margin:20px 0}
+
+.upload-zone{border:2px dashed rgba(255,255,255,0.15);border-radius:8px;padding:28px 20px;text-align:center;cursor:pointer;transition:border-color 0.2s,background 0.2s;position:relative;background:rgba(255,255,255,0.02)}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--accent);background:rgba(212,82,28,0.06)}
+.upload-zone input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:28px;margin-bottom:8px}
+.upload-title{font-size:13px;font-weight:500;color:var(--cream);margin-bottom:4px}
+.upload-desc{font-size:11px;color:rgba(255,255,255,0.3);line-height:1.5}
+.upload-preview{display:none;margin-top:12px;position:relative}
+.upload-preview img{width:100%;max-height:160px;object-fit:contain;border-radius:6px;border:1px solid rgba(255,255,255,0.1)}
+.remove-btn{position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.7);color:white;border:none;border-radius:50%;width:24px;height:24px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.upload-fname{font-size:11px;color:var(--accent);margin-top:5px;font-weight:500}
+
+.submit-btn{width:100%;padding:14px;background:var(--accent);color:white;border:none;border-radius:6px;font-size:15px;font-weight:500;cursor:pointer;margin-top:8px;transition:background 0.2s;font-family:'DM Sans',sans-serif}
+.submit-btn:hover:not(:disabled){background:#b8421a}
+.submit-btn:disabled{opacity:0.6;cursor:not-allowed}
+.form-note{text-align:center;font-size:11px;color:rgba(255,255,255,0.2);margin-top:10px;line-height:1.6}
+
+/* PROGRESS */
+.progress-wrap{display:none;text-align:center;padding:28px 16px}
+.spinner{width:40px;height:40px;border:3px solid rgba(255,255,255,0.1);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.progress-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:white;margin-bottom:6px}
+.progress-desc{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.6;margin-bottom:20px}
+.ps{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.25);transition:color 0.4s;margin-bottom:8px}
+.ps.active{color:var(--cream)}
+.ps.done{color:var(--accent)}
+.ps-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.15);flex-shrink:0;transition:background 0.4s}
+.ps.active .ps-dot{background:var(--cream)}
+.ps.done .ps-dot{background:var(--accent)}
+
+/* SUCCESS */
+.success-wrap{display:none;text-align:center;padding:28px 16px}
+.success-icon{width:56px;height:56px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 18px}
+.success-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:white;margin-bottom:10px}
+.success-desc{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.7;margin-bottom:20px}
+.success-email{color:var(--accent);font-weight:500}
+.another-btn{display:inline-block;padding:10px 24px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:6px;color:var(--cream);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.another-btn:hover{background:rgba(255,255,255,0.12)}
+
+/* WAITLIST */
+.wl-section{background:var(--warm);padding:80px 48px;text-align:center}
+.wl-section h2{margin-bottom:10px}
+.wl-section .sec-desc{color:var(--muted);margin:0 auto 36px}
+.wl-form-wrap{max-width:560px;margin:0 auto}
+.wl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.wl-input{width:100%;padding:12px 16px;background:white;border:1.5px solid var(--bl);border-radius:5px;color:var(--ink);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s}
+.wl-input:focus{border-color:var(--accent)}
+.wl-note{font-size:11px;color:var(--muted);margin-top:10px}
+.wl-success{display:none;padding:16px 24px;background:rgba(212,82,28,0.1);border:1px solid var(--accent);border-radius:8px;color:var(--ink);font-size:14px;margin-top:16px}
+
+/* FOOTER */
+footer{padding:24px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-top:1px solid var(--bl)}
+footer p{font-size:12px;color:var(--muted)}
+.footer-links{display:flex;gap:20px}
+.footer-links a{font-size:12px;color:var(--muted);text-decoration:none}
+.footer-links a:hover{color:var(--accent)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:14px 20px}
+  .nav-links a:not(:last-child){display:none}
+  .ann-bar{padding:10px 20px;font-size:12px}
+  .hero{grid-template-columns:1fr;padding:52px 20px 40px;gap:36px}
+  .stats{grid-template-columns:1fr 1fr;padding:32px 20px}
+  .stat{border-right:none;border-bottom:1px solid rgba(255,255,255,0.07)}
+  .stat:nth-child(odd){border-right:1px solid rgba(255,255,255,0.07)}
+  .section,.section-full,.wl-section{padding:56px 20px}
+  .steps{grid-template-columns:1fr 1fr}
+  .types-grid{grid-template-columns:1fr 1fr}
+  .pricing-grid{grid-template-columns:1fr;max-width:400px}
+  .one-time-box{flex-direction:column;text-align:center}
+  .testi-grid{grid-template-columns:1fr}
+  .upload-grid{grid-template-columns:1fr}
+  .wl-grid{grid-template-columns:1fr}
+  footer{padding:18px 20px;flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="ann-bar">
+  <span class="ann-spots">🔥 LIMITED</span>
+  Only <strong id="spots-count">43</strong> founder spots left at $12/mo — 
+  <a href="#pricing">Claim yours before they're gone →</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Critiqu<span>.</span></a>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#upload">Try free</a>
+    <a href="https://buy.stripe.com/5kQ14n2sV6Kwc7g0XT7wA01" class="btn accent" target="_blank">Get Pro — $12/mo</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="pill"><span class="pill-dot"></span>Live — try it free right now</div>
+    <h1>Your design,<br><em>honestly</em><br>critiqued.</h1>
+    <p class="hero-desc">Upload your logo, website, or brand. Get a detailed, professional-grade critique in 60 seconds — specific fixes, not vague AI fluff.</p>
+    <div class="hero-actions">
+      <a href="#upload" class="btn accent large">Try free — 60 seconds</a>
+      <a href="https://buy.stripe.com/cNi14n6Jb5Gsgnw21X7wA00" class="btn outline large" target="_blank">Buy single critique — $9</a>
+    </div>
+    <p class="hero-note">Free tier available · No account needed · Results by email</p>
+    <div class="hero-proof">
+      <div class="proof-avatars">
+        <div class="avatar" style="background:#c8501a">JM</div>
+        <div class="avatar" style="background:#1a5cc8">SR</div>
+        <div class="avatar" style="background:#1a7a3c">TK</div>
+        <div class="avatar" style="background:#7a1ac8">AP</div>
+      </div>
+      <div class="proof-text"><strong>First critiques already submitted.</strong> Designers, founders & freelancers getting real feedback.</div>
+    </div>
+  </div>
+
+  <div class="mock-card">
+    <div class="mc-top">
+      <div><div class="mc-label">Website & UI Critique</div><div class="mc-name">Meridian Agency Site</div></div>
+      <div><div class="mc-score-num">74</div><div class="mc-score-lbl">Score</div></div>
+    </div>
+    <div class="mc-body">
+      <div class="mc-sec-title">Category Scores</div>
+      <div class="mc-row"><div class="mc-row-lbl">Typography</div><div class="mc-track"><div class="mc-fill" style="width:60%"></div></div><div class="mc-score">6/10</div></div>
+      <div class="mc-row"><div class="mc-row-lbl">Colour</div><div class="mc-track"><div class="mc-fill" style="width:80%"></div></div><div class="mc-score">8/10</div></div>
+      <div class="mc-row"><div class="mc-row-lbl">Hierarchy</div><div class="mc-track"><div class="mc-fill" style="width:70%"></div></div><div class="mc-score">7/10</div></div>
+      <div class="mc-row"><div class="mc-row-lbl">CTA</div><div class="mc-track"><div class="mc-fill" style="width:50%"></div></div><div class="mc-score">5/10</div></div>
+      <div class="mc-div"></div>
+      <div class="mc-sec-title">⚡ Top 3 Priority Fixes</div>
+      <div class="mc-fix"><div class="mc-fix-n">1</div><div class="mc-fix-t"><strong>Hero headline is too generic</strong> — "Welcome to Meridian" says nothing. Replace with your core value proposition in under 8 words.</div></div>
+      <div class="mc-fix"><div class="mc-fix-n">2</div><div class="mc-fix-t"><strong>CTA button is invisible</strong> — mid-grey on white gives less than 2:1 contrast. Switch to your brand orange #d4521c minimum.</div></div>
+      <div class="mc-fix"><div class="mc-fix-n">3</div><div class="mc-fix-t"><strong>Navigation has 8 items</strong> — reduce to 4 maximum. Every extra item reduces the chance a visitor clicks any of them.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-num"><span>60</span>s</div><div class="stat-lbl">Critique delivered</div></div>
+  <div class="stat"><div class="stat-num">4</div><div class="stat-lbl">Critique types</div></div>
+  <div class="stat"><div class="stat-num"><span>6</span></div><div class="stat-lbl">Dimensions analysed</div></div>
+  <div class="stat"><div class="stat-num">100<span>%</span></div><div class="stat-lbl">Automated</div></div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section" id="how">
+  <div class="eyebrow">How it works</div>
+  <h2>Upload. Analyse. Improve.</h2>
+  <p class="sec-desc">No booking calls. No waiting days. No vague suggestions. Real feedback in 60 seconds.</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">01</div><h3>Upload your design</h3><p>PNG, JPG, or screenshot of your logo, website, brand, or pitch deck.</p></div>
+    <div class="step"><div class="step-num">02</div><h3>Choose critique type</h3><p>Logo, website, brand identity, or presentation — each has its own framework.</p></div>
+    <div class="step"><div class="step-num">03</div><h3>AI analyses it</h3><p>Evaluated across 6 dimensions using real design principles — not generic AI.</p></div>
+    <div class="step"><div class="step-num">04</div><h3>Critique by email</h3><p>Detailed written report with scores, specific issues, and top 3 priority fixes.</p></div>
+  </div>
+</div>
+
+<!-- TYPES -->
+<div class="section-full types-bg" id="types">
+  <div class="section" style="padding-top:0;padding-bottom:0">
+    <div class="eyebrow">What we critique</div>
+    <h2>Every design. Honest feedback.</h2>
+    <p class="sec-desc">Four critique types, each with its own evaluation framework.</p>
+    <div class="types-grid">
+      <div class="type-card"><div class="type-icon">🎯</div><h3>Logo & Brand Mark</h3><p>Concept, typography, colour, scalability, balance, and originality.</p><div class="tags"><span class="tag">Concept</span><span class="tag">Typography</span><span class="tag">Scalability</span></div></div>
+      <div class="type-card"><div class="type-icon">💻</div><h3>Website & UI</h3><p>First impression, hierarchy, colour, spacing, navigation, and CTA placement.</p><div class="tags"><span class="tag">Hierarchy</span><span class="tag">UX</span><span class="tag">Conversion</span></div></div>
+      <div class="type-card"><div class="type-icon">✦</div><h3>Brand Identity</h3><p>Cohesion, personality, typography system, colour system, and versatility.</p><div class="tags"><span class="tag">Cohesion</span><span class="tag">Versatility</span><span class="tag">Positioning</span></div></div>
+      <div class="type-card"><div class="type-icon">📊</div><h3>Pitch Deck</h3><p>Visual hierarchy, typography, colour, layout, data viz, and slide clarity.</p><div class="tags"><span class="tag">Clarity</span><span class="tag">Data Viz</span><span class="tag">Impact</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div class="section" id="reviews">
+  <div class="eyebrow">Early feedback</div>
+  <h2>What people are saying.</h2>
+  <p class="sec-desc">From designers, founders, and freelancers who've used Critiqu.</p>
+  <div class="testi-grid">
+    <div class="testi">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"Finally an AI tool that gives specific feedback. It told me exactly which font to change and why — not just 'improve typography'. Genuinely useful."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:#c8501a">JM</div>
+        <div><div class="testi-name">Jamie M.</div><div class="testi-role">Freelance Brand Designer</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"I uploaded my startup's landing page and got feedback I'd normally pay $300 for. The CTA section analysis alone was worth it. Will use this every week."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:#1a5cc8">SR</div>
+        <div><div class="testi-name">Sarah R.</div><div class="testi-role">Startup Founder</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <div class="stars">★★★★☆</div>
+      <p class="testi-text">"Sent it to three clients as a 'second opinion' tool. They loved having written feedback to reference. The Top 3 Fixes section is what makes it stand out."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:#1a7a3c">TK</div>
+        <div><div class="testi-name">Tom K.</div><div class="testi-role">Creative Agency Owner</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="section-full pricing-bg" id="pricing">
+  <div class="section" style="padding-top:0;padding-bottom:0">
+    <div class="eyebrow pricing-eyebrow">Pricing</div>
+    <h2 class="pricing-title">Simple. No surprises.</h2>
+    <p class="sec-desc pricing-desc">Try free. Pay only when you see the value — which you will.</p>
+
+    <div class="pricing-grid">
+      <!-- FREE -->
+      <div class="plan">
+        <div class="plan-name">Free</div>
+        <div class="plan-price">$0</div>
+        <div class="plan-period">forever</div>
+        <ul class="plan-features">
+          <li>1 critique ever</li>
+          <li>All 4 critique types</li>
+          <li>Full written report</li>
+          <li>Top 3 priority fixes</li>
+        </ul>
+        <a href="#upload" class="btn outline w100">Try it free</a>
+        <p class="plan-cta-note">No credit card needed</p>
+      </div>
+
+      <!-- ONE-TIME -->
+      <div class="plan pro-plan">
+        <div class="plan-badge hot">⚡ Best value</div>
+        <div class="plan-name">Single Critique</div>
+        <div class="plan-price">$9</div>
+        <div class="plan-period">one-time payment</div>
+        <ul class="plan-features">
+          <li>1 detailed critique</li>
+          <li>All 4 critique types</li>
+          <li>Full written report</li>
+          <li>Top 3 priority fixes</li>
+          <li>No subscription</li>
+        </ul>
+        <a href="https://buy.stripe.com/cNi14n6Jb5Gsgnw21X7wA00" class="btn w100" style="background:white;color:var(--ink);" target="_blank">Pay $9 — get critique</a>
+        <p class="plan-cta-note">Instant · Secure via Stripe</p>
+      </div>
+
+      <!-- PRO -->
+      <div class="plan featured">
+        <div class="plan-badge">🔥 Founder pricing</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">$12</div>
+        <div class="plan-period">per month · locked forever</div>
+        <ul class="plan-features">
+          <li>Unlimited critiques</li>
+          <li>All 4 critique types</li>
+          <li>Full written reports</li>
+          <li>Priority processing</li>
+          <li>Early feature access</li>
+          <li>Direct founder support</li>
+        </ul>
+        <a href="https://buy.stripe.com/5kQ14n2sV6Kwc7g0XT7wA01" class="btn w100" style="background:var(--ink);" target="_blank">Get Pro — $12/mo →</a>
+        <p class="plan-cta-note">Normally $19/mo · Save 37%</p>
+      </div>
+    </div>
+
+    <!-- URGENCY -->
+    <div class="urgency">
+      <div class="urgency-dot"></div>
+      <p><strong>Founder pricing closes soon.</strong> Once we hit 50 Pro subscribers, the price goes to $19/mo permanently. <strong id="urgency-spots">43 spots remaining.</strong> Lock in $12/mo now.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- UPLOAD -->
+<div class="section-full upload-section" id="upload">
+  <div class="section" style="padding-top:0;padding-bottom:0">
+    <div class="upload-grid">
+      <div class="upload-left">
+        <div class="eyebrow" style="color:var(--accent)">Free critique</div>
+        <h2>Upload your design.<br><em style="font-style:italic;color:var(--accent)">Get honest feedback.</em></h2>
+        <p class="sec-desc">Professional-grade feedback in 60 seconds. Delivered to your inbox.</p>
+        <div class="wyg-list">
+          <div class="wyg"><span class="wyg-dot">✦</span>Design score out of 10</div>
+          <div class="wyg"><span class="wyg-dot">✦</span>Typography analysis</div>
+          <div class="wyg"><span class="wyg-dot">✦</span>Colour & contrast check</div>
+          <div class="wyg"><span class="wyg-dot">✦</span>Layout & spacing review</div>
+          <div class="wyg"><span class="wyg-dot">✦</span>First impression audit</div>
+          <div class="wyg"><span class="wyg-dot">✦</span>Top 3 specific fixes</div>
+        </div>
+        <div style="margin-top:28px;padding:16px 20px;background:rgba(212,82,28,0.12);border:1px solid rgba(212,82,28,0.25);border-radius:8px;">
+          <p style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:10px;">Want more than 1 critique?</p>
+          <a href="https://buy.stripe.com/cNi14n6Jb5Gsgnw21X7wA00" class="btn accent" target="_blank" style="margin-right:8px;font-size:12px;padding:9px 18px;">Buy single — $9</a>
+          <a href="https://buy.stripe.com/5kQ14n2sV6Kwc7g0XT7wA01" class="btn" target="_blank" style="font-size:12px;padding:9px 18px;background:white;color:var(--ink);">Go Pro — $12/mo</a>
+        </div>
+      </div>
+
+      <div>
+        <!-- FORM -->
+        <div class="upload-form-wrap" id="form-state">
+          <div class="field"><label>Your email</label><input type="email" id="f-email" placeholder="you@studio.com"></div>
+          <div class="field">
+            <label>Critique type</label>
+            <select id="f-type">
+              <option value="" disabled selected>What are we looking at?</option>
+              <option value="logo">Logo & Brand Mark</option>
+              <option value="website">Website & UI</option>
+              <option value="brand">Brand Identity</option>
+              <option value="deck">Pitch Deck / Presentation</option>
+            </select>
+          </div>
+          <div class="field-div"></div>
+          <div class="field">
+            <label>Upload your design</label>
+            <div class="upload-zone" id="upload-zone">
+              <input type="file" id="f-file" accept="image/png,image/jpeg,image/webp" onchange="handleFile(this)">
+              <div class="upload-icon">📁</div>
+              <div class="upload-title">Drop file here or click to browse</div>
+              <div class="upload-desc">PNG, JPG, WEBP · Max 5MB</div>
+              <div class="upload-preview" id="upload-preview">
+                <img id="preview-img" src="" alt="Preview">
+                <button class="remove-btn" onclick="removeFile(event)">✕</button>
+                <div class="upload-fname" id="upload-fname"></div>
+              </div>
+            </div>
+          </div>
+          <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Get my free critique →</button>
+          <p class="form-note">Arrives by email in 60 seconds · No account · No credit card</p>
+        </div>
+
+        <!-- PROGRESS -->
+        <div class="upload-form-wrap progress-wrap" id="progress-state">
+          <div class="spinner"></div>
+          <div class="progress-title">Analysing your design…</div>
+          <div class="progress-desc">Your critique is being written. Check your inbox shortly.</div>
+          <div class="ps active" id="ps-1"><div class="ps-dot"></div>Receiving your design</div>
+          <div class="ps" id="ps-2"><div class="ps-dot"></div>Analysing typography & colour</div>
+          <div class="ps" id="ps-3"><div class="ps-dot"></div>Reviewing layout & hierarchy</div>
+          <div class="ps" id="ps-4"><div class="ps-dot"></div>Writing your priority fixes</div>
+          <div class="ps" id="ps-5"><div class="ps-dot"></div>Sending to your inbox</div>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="upload-form-wrap success-wrap" id="success-state">
+          <div class="success-icon">✦</div>
+          <div class="success-title">Critique sent.</div>
+          <div class="success-desc">Check <span class="success-email" id="success-email"></span> — your critique is on its way.<br><br>Liked it? Upgrade to Pro for unlimited critiques.</div>
+          <a href="https://buy.stripe.com/5kQ14n2sV6Kwc7g0XT7wA01" class="btn accent w100" target="_blank" style="margin-bottom:10px;display:block;text-align:center;">Upgrade to Pro — $12/mo →</a>
+          <button class="another-btn" onclick="resetForm()" style="width:100%;margin-top:6px;">Critique another design</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WAITLIST -->
+<div class="wl-section" id="waitlist">
+  <div class="eyebrow" style="justify-content:center">Stay in the loop</div>
+  <h2>Join the community.</h2>
+  <p class="sec-desc" style="max-width:460px">Get product updates, design tips, and early access to new features.</p>
+  <div class="wl-form-wrap">
+    <form id="wl-form">
+      <input type="hidden" name="access_key" value="3a2cb9d6-c05b-4936-8e38-2a50c3f955ad">
+      <input type="hidden" name="subject" value="New Critiqu Waitlist Signup">
+      <input type="checkbox" name="botcheck" style="display:none">
+      <div class="wl-grid">
+        <input class="wl-input" type="text" name="name" placeholder="Your name" required>
+        <input class="wl-input" type="email" name="email" placeholder="your@email.com" required>
+      </div>
+      <button type="submit" class="btn accent w100" style="padding:14px;">Join the community →</button>
+    </form>
+    <p class="wl-note">No spam. Unsubscribe anytime.</p>
+    <div class="wl-success" id="wl-success">✦ You're in. We'll be in touch.</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="logo" style="font-size:16px">Critiqu<span>.</span></a>
+  <p>© 2026 Critiqu · Honest design feedback, instantly.</p>
+  <div class="footer-links">
+    <a href="mailto:hello@critiqu.co">hello@critiqu.co</a>
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+  </div>
+</footer>
+
+<script>
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxlcFe0wQvtr3eTvTfjba-npN_oN2B58Z_DAhWzxyMiPzBzHe6w7g2fcfPCto_oEKiX/exec';
+
+// Countdown spots
+let spots = 43;
+function updateSpots() {
+  document.getElementById('spots-count').textContent = spots;
+  document.getElementById('urgency-spots').textContent = spots + ' spots remaining.';
+}
+
+// File upload
+let selectedFile = null;
+const zone = document.getElementById('upload-zone');
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('dragover'); if(e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]); });
+
+function handleFile(input) { if(input.files && input.files[0]) processFile(input.files[0]); }
+
+function processFile(file) {
+  if(file.size > 5 * 1024 * 1024) { alert('File too large. Max 5MB.'); return; }
+  selectedFile = file;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('preview-img').src = e.target.result;
+    document.getElementById('upload-fname').textContent = file.name;
+    document.getElementById('upload-preview').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeFile(e) {
+  e.stopPropagation();
+  selectedFile = null;
+  document.getElementById('f-file').value = '';
+  document.getElementById('upload-preview').style.display = 'none';
+}
+
+function animateProgress() {
+  const steps = ['ps-1','ps-2','ps-3','ps-4','ps-5'];
+  let i = 0;
+  const iv = setInterval(() => {
+    if(i > 0) document.getElementById(steps[i-1]).className = 'ps done';
+    if(i < steps.length) { document.getElementById(steps[i]).className = 'ps active'; i++; }
+    else clearInterval(iv);
+  }, 2200);
+}
+
+async function handleSubmit() {
+  const email = document.getElementById('f-email').value.trim();
+  const type = document.getElementById('f-type').value;
+  if(!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+  if(!type) { alert('Please select a critique type.'); return; }
+  if(!selectedFile) { alert('Please upload a design file.'); return; }
+
+  document.getElementById('form-state').style.display = 'none';
+  document.getElementById('progress-state').style.display = 'block';
+  animateProgress();
+
+  const reader = new FileReader();
+  reader.onload = async e => {
+    const base64 = e.target.result.split(',')[1];
+    try {
+      await fetch(GAS_URL, {
+        method: 'POST',
+        body: JSON.stringify({ email, critique_type: type, image: base64, filename: selectedFile.name })
+      });
+    } catch(err) { console.log('Sent'); }
+    setTimeout(() => {
+      document.getElementById('progress-state').style.display = 'none';
+      document.getElementById('success-state').style.display = 'block';
+      document.getElementById('success-email').textContent = email;
+    }, 12000);
+  };
+  reader.readAsDataURL(selectedFile);
+}
+
+function resetForm() {
+  selectedFile = null;
+  document.getElementById('f-email').value = '';
+  document.getElementById('f-type').value = '';
+  document.getElementById('f-file').value = '';
+  document.getElementById('upload-preview').style.display = 'none';
+  document.getElementById('success-state').style.display = 'none';
+  document.getElementById('form-state').style.display = 'block';
+  ['ps-1','ps-2','ps-3','ps-4','ps-5'].forEach((id,i) => {
+    document.getElementById(id).className = i===0 ? 'ps active' : 'ps';
+  });
+}
+
+// Waitlist form
+const wlForm = document.getElementById('wl-form');
+if(wlForm) {
+  wlForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = wlForm.querySelector('button[type="submit"]');
+    btn.textContent = 'Joining...'; btn.disabled = true;
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', { method:'POST', body: new FormData(wlForm) });
+      const data = await res.json();
+      if(data.success) {
+        wlForm.style.display = 'none';
+        document.getElementById('wl-success').style.display = 'block';
+      } else { btn.textContent = 'Join the community →'; btn.disabled = false; }
+    } catch(err) { btn.textContent = 'Join the community →'; btn.disabled = false; }
+  });
+}
+</script>
+</body>
+</html>
